@@ -6,6 +6,9 @@ AFRAME.registerComponent('update-distance', {
     // Get the object entities
     this.objectSquid = document.querySelector('#object-squid');
     this.objectRobot = document.querySelector('#object-robot');
+
+    // Set the default animation for objectROBOT
+    this.objectRobot.setAttribute("animation-mixer", "clip: IDLE; loop: repeat; duration: 0; crossFadeDuration: 1");
   },
 
   tick: function () {
@@ -20,13 +23,14 @@ AFRAME.registerComponent('update-distance', {
     const distance = positionSquid.distanceTo(positionRobot);
 
     // Log the distance to the console
+    console.log('Distance between object-squid and object-robot: ' + distance.toFixed(2) + ' units');
 
-    //console.log('Distance between object-squid and object-robot: ' + distance.toFixed(2) + ' units');
-
-    // Check the distance and update animations
-    if (markerSQUIDvisible && distance < 1000) {
+    // Check the distance and update animations for objectROBOT and objectROBOT
+    if (markerSQUIDvisible && markerROBOTvisible && distance < 1000) {
+      this.objectRobot.setAttribute("animation-mixer", "clip: Waiting; loop: repeat; duration: 0; crossFadeDuration: 1");
       this.objectSquid.setAttribute("animation-mixer", "clip: Idle.001; loop: repeat; duration: 0; crossFadeDuration: 1");
     } else {
+      this.objectRobot.setAttribute("animation-mixer", "clip: IDLE; loop: repeat; duration: 0; crossFadeDuration: 1");
       this.objectSquid.setAttribute("animation-mixer", "clip: Idle; loop: repeat; duration: 0; crossFadeDuration: 1");
     }
   },
@@ -41,7 +45,7 @@ AFRAME.registerComponent("marker-robot", {
     markerROBOT.addEventListener("targetFound", (event) => {
       console.log("Target robot found");
       markerROBOTvisible = true;
-      objectROBOT.setAttribute("animation-mixer", "clip: ''; loop: repeat; duration: 0; crossFadeDuration: 1");
+      objectROBOT.setAttribute("animation-mixer", "clip: IDLE; loop: repeat; duration: 0; crossFadeDuration: 1");
       objectROBOT.setAttribute("look-at", "[camera]");
 
       if (markerSQUIDvisible == true) {
@@ -56,24 +60,6 @@ AFRAME.registerComponent("marker-robot", {
 
       objectSQUID.setAttribute("look-at", "[camera]");
     });
-    this.updateDistance = function () {
-      // Get the positions of the objects
-      const positionSquid = new THREE.Vector3();
-      const positionRobot = new THREE.Vector3();
-
-      objectSQUID.object3D.getWorldPosition(positionSquid);
-      objectROBOT.object3D.getWorldPosition(positionRobot);
-
-      // Calculate the distance between the two objects
-      const distance = positionRobot.distanceTo(positionSquid);
-
-      // Check the distance and update animations
-      if (markerROBOTvisible && distance < 1000) {
-        objectROBOT.setAttribute("animation-mixer", "clip: Idle.001; loop: repeat; duration: 0; crossFadeDuration: 1");
-      } else {
-        objectROBOT.setAttribute("animation-mixer", "clip: Idle; loop: repeat; duration: 0; crossFadeDuration: 1");
-      }
-    };
   }
 });
 
@@ -87,12 +73,10 @@ AFRAME.registerComponent("marker-squid", {
       console.log("Target squid found");
       objectSQUID.setAttribute("animation-mixer", "clip: Idle; loop: repeat; duration: 0; crossFadeDuration: 1");
       markerSQUIDvisible = true;
-      this.updateDistance(); // Call the distance update
 
       if (markerROBOTvisible == true) {
         objectROBOT.setAttribute("look-at", "[object-squid]");
         objectSQUID.setAttribute("look-at", "[object-robot]");
-        this.updateDistance(); // Call the distance update
       }
     });
 
@@ -102,24 +86,5 @@ AFRAME.registerComponent("marker-squid", {
       markerSQUIDvisible = false;
       objectROBOT.setAttribute("look-at", "[camera]");
     });
-
-    this.updateDistance = function () {
-      // Get the positions of the objects
-      const positionSquid = new THREE.Vector3();
-      const positionRobot = new THREE.Vector3();
-
-      objectSQUID.object3D.getWorldPosition(positionSquid);
-      objectROBOT.object3D.getWorldPosition(positionRobot);
-
-      // Calculate the distance between the two objects
-      const distance = positionSquid.distanceTo(positionRobot);
-
-      // Check the distance and update animations
-      if (markerSQUIDvisible && distance < 1000) {
-        objectSQUID.setAttribute("animation-mixer", "clip: Idle.001; loop: repeat; duration: 0; crossFadeDuration: 1");
-      } else {
-        objectSQUID.setAttribute("animation-mixer", "clip: Idle; loop: repeat; duration: 0; crossFadeDuration: 1");
-      }
-    };
   }
 });
