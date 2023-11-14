@@ -29,7 +29,7 @@ AFRAME.registerComponent('update-distance', {
     //console.log(xPositionRBT);
 
     // Check the distance and update animations for objectROBOT and objectROBOT
-    const lookAtMeAShley = (pos1, pos2) => {
+    const lookAtMeAShley = (pos1, pos2, dist) => {
       if (pos1 <= 0){
         this.objectSquid.setAttribute("animation", "property: rotation; to: 0 90 0; dur: 1000; easing: linear");
         this.objectRobot.setAttribute("animation", "property: rotation; to: 0 -90 0; dur: 1000; easing: linear");
@@ -42,7 +42,7 @@ AFRAME.registerComponent('update-distance', {
         this.objectSquid.removeAttribute("look-at");
         this.objectRobot.removeAttribute("look-at");
       }
-      if (distance < 1000) {
+      if (dist < 1000) {
         this.objectRobot.setAttribute("animation-mixer", "clip: Waiting; loop: repeat; duration: 0; crossFadeDuration: 1");
         this.objectSquid.setAttribute("animation-mixer", "clip: Talk; loop: repeat; duration: 0; crossFadeDuration: 1");
       }
@@ -53,8 +53,8 @@ AFRAME.registerComponent('update-distance', {
     }
 
     if (markerSQUIDvisible && markerROBOTvisible) {
-      lookAtMeAShley(xPositionSQD, xPositionRBT)
-    }    
+      lookAtMeAShley(xPositionSQD, xPositionRBT, distance)
+    }       
 },
 });
 
@@ -68,16 +68,6 @@ AFRAME.registerComponent("marker-robot", {
       console.log("Target robot found");
       markerROBOTvisible = true;
       objectSQUID.setAttribute("look-at", "[camera]");
-      //objectROBOT.setAttribute("animation-mixer", "clip: Appearance; loop: repeat; duration: 0; crossFadeDuration: 1");
-      //objectROBOT.setAttribute("animation-mixer", "clip: IDLE; loop: repeat; duration: 0; crossFadeDuration: 1");
-
-      //if (markerSQUIDvisible == true) {
-        //objectSQUID.setAttribute("look-at", "[camera]");
-        //objectSQUID.setAttribute("look-at", "[object-robot]");
-        //objectSQUID.setAttribute("animation", "property: rotation; to: 0 90 0; dur: 1500; easing: linear");
-        //objectROBOT.setAttribute("look-at", "[object-squid]");
-        //objectROBOT.setAttribute("animation", "property: rotation; to: 0 -90 0; dur: 1500; easing: linear");
-      //}
     });
 
     markerROBOT.addEventListener("targetLost", (event) => {
@@ -97,21 +87,22 @@ AFRAME.registerComponent("marker-squid", {
     const markerSQUID = this.el;
     const objectROBOT = document.getElementById("object-robot");
     const objectSQUID = document.getElementById("object-squid");
+    let popUpPlayed = false;
 
     markerSQUID.addEventListener("targetFound", (event) => {
       console.log("Target squid found");
       markerSQUIDvisible = true;
-      objectSQUID.setAttribute("look-at", "[camera]");
-      //objectROBOT.removeAttribute("look-at");
-      //objectSQUID.setAttribute("animation-mixer", "clip: Pop Up; loop: repeat; duration: 0; crossFadeDuration: 1");
-      //objectSQUID.setAttribute("animation-mixer", "clip: Idle; loop: repeat; duration: 0; crossFadeDuration: 1");
+      objectROBOT.setAttribute("look-at", "[camera]");
 
-      //if (markerROBOTvisible == true) {
-        //objectROBOT.setAttribute("look-at", "[object-squid]");
-        //objectROBOT.setAttribute("animation", "property: rotation; to: 0 90 0; dur: 1500; easing: linear");
-        //objectSQUID.setAttribute("look-at", "[object-robot]");
-        //objectSQUID.setAttribute("animation", "property: rotation; to: 0 -90 0; dur: 1500; easing: linear");
-      //}
+      if (!popUpPlayed) {
+        // Play Pop Up animation only if it hasn't played before
+        objectSQUID.setAttribute("animation-mixer", "clip: Pop Up; loop: once; duration: 0");
+        popUpPlayed = true;
+      }
+      if (popUpPlayed == true) {
+        // Play Idle animation if Pop Up has already played
+        objectSQUID.setAttribute("animation-mixer", "clip: Idle; loop: repeat; duration: 0; crossFadeDuration: 1");
+      }
     });
 
     markerSQUID.addEventListener("targetLost", (event) => {
