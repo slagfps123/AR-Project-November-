@@ -36,7 +36,7 @@ AFRAME.registerComponent('update-distance', {
         this.objectSquid.removeAttribute("look-at");
         this.objectRobot.removeAttribute("look-at");
       }
-      else if (pos2 <=0 ) {
+      if (pos2 <=0 ) {
         this.objectSquid.setAttribute("animation", "property: rotation; to: 0 -90 0; dur: 500; easing: linear");
         this.objectRobot.setAttribute("animation", "property: rotation; to: 0 90 0; dur: 500; easing: linear");
         this.objectSquid.removeAttribute("look-at");
