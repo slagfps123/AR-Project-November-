@@ -44,11 +44,11 @@ AFRAME.registerComponent('update-distance', {
       }
       if (dist < 1000) {
         this.objectRobot.setAttribute("animation-mixer", "clip: Waiting; loop: repeat; duration: 0; crossFadeDuration: 1");
-        this.objectSquid.setAttribute("animation-mixer", "clip: Talk; loop: repeat; duration: 0; crossFadeDuration: 1");
+        this.objectSquid.setAttribute("animation-mixer", "clip: Waiting; loop: repeat; duration: 0; crossFadeDuration: 1");
       }
       else {
         this.objectRobot.setAttribute("animation-mixer", "clip: IDLE; loop: repeat; duration: 0; crossFadeDuration: 1");
-        this.objectSquid.setAttribute("animation-mixer", "clip: Idle; loop: repeat; duration: 0; crossFadeDuration: 1");
+        this.objectSquid.setAttribute("animation-mixer", "clip: IDLE; loop: repeat; duration: 0; crossFadeDuration: 1");
       }
     }
 
@@ -63,11 +63,22 @@ AFRAME.registerComponent("marker-robot", {
     const markerROBOT = this.el;
     const objectSQUID = document.getElementById("object-squid");
     const objectROBOT = document.getElementById("object-robot");
+    let popUpPlayedRBT = false;
 
     markerROBOT.addEventListener("targetFound", (event) => {
       console.log("Target robot found");
       markerROBOTvisible = true;
       objectSQUID.setAttribute("look-at", "[camera]");
+
+      if (!popUpPlayedRBT) {
+        // Play Pop Up animation only if it hasn't played before
+        objectROBOT.setAttribute("animation-mixer", "clip: Appearance; loop: once; duration: 0");
+        popUpPlayedRBT = true;
+      }
+      if (popUpPlayedRBT == true) {
+        // Play Idle animation if Pop Up has already played
+        objectROBOT.setAttribute("animation-mixer", "clip: IDLE; loop: repeat; duration: 0; crossFadeDuration: 1");
+      }
     });
 
     markerROBOT.addEventListener("targetLost", (event) => {
@@ -87,21 +98,21 @@ AFRAME.registerComponent("marker-squid", {
     const markerSQUID = this.el;
     const objectROBOT = document.getElementById("object-robot");
     const objectSQUID = document.getElementById("object-squid");
-    let popUpPlayed = false;
+    let popUpPlayedSQD = false;
 
     markerSQUID.addEventListener("targetFound", (event) => {
       console.log("Target squid found");
       markerSQUIDvisible = true;
       objectROBOT.setAttribute("look-at", "[camera]");
 
-      if (!popUpPlayed) {
+      if (!popUpPlayedSQD) {
         // Play Pop Up animation only if it hasn't played before
-        objectSQUID.setAttribute("animation-mixer", "clip: Pop Up; loop: once; duration: 0");
-        popUpPlayed = true;
+        objectSQUID.setAttribute("animation-mixer", "clip: Apperance; loop: once; duration: 0");
+        popUpPlayedSQD = true;
       }
-      if (popUpPlayed == true) {
+      if (popUpPlayedSQD == true) {
         // Play Idle animation if Pop Up has already played
-        objectSQUID.setAttribute("animation-mixer", "clip: Idle; loop: repeat; duration: 0; crossFadeDuration: 1");
+        objectSQUID.setAttribute("animation-mixer", "clip: IDLE; loop: repeat; duration: 0; crossFadeDuration: 1");
       }
     });
 
@@ -116,3 +127,4 @@ AFRAME.registerComponent("marker-squid", {
     });
   }
 });
+
