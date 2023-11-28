@@ -42,7 +42,7 @@ AFRAME.registerComponent('update-distance', {
         this.objectSquid.removeAttribute("look-at");
         this.objectRobot.removeAttribute("look-at");
       }
-      if (dist < 1000) {
+      if (dist < 900) {
         this.objectRobot.setAttribute("animation-mixer", "clip: Waiting; loop: repeat; duration: 0; crossFadeDuration: 1");
         this.objectSquid.setAttribute("animation-mixer", "clip: Waiting; loop: repeat; duration: 0; crossFadeDuration: 1");
       }
@@ -54,6 +54,7 @@ AFRAME.registerComponent('update-distance', {
 
     if (markerSQUIDvisible && markerROBOTvisible) {
       lookAtMeAShley(xPositionSQD, xPositionRBT, distance)
+      console.log('Distance between object-squid and object-robot: ' + distance.toFixed(2) + ' units');
     }       
 },
 });
@@ -127,4 +128,3 @@ AFRAME.registerComponent("marker-squid", {
     });
   }
 });
-
