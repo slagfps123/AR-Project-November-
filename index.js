@@ -36,13 +36,13 @@ AFRAME.registerComponent('update-distance', {
         this.objectSquid.removeAttribute("look-at");
         this.objectRobot.removeAttribute("look-at");
       }
-      if (pos2 <=0 ) {
+      else if (pos2 <=0 ) {
         this.objectSquid.setAttribute("animation", "property: rotation; to: 0 -90 0; dur: 500; easing: linear");
         this.objectRobot.setAttribute("animation", "property: rotation; to: 0 90 0; dur: 500; easing: linear");
         this.objectSquid.removeAttribute("look-at");
         this.objectRobot.removeAttribute("look-at");
       }
-      if (dist < 900) {
+      if (dist < 1200) {
         this.objectRobot.setAttribute("animation-mixer", "clip: Waiting; loop: repeat; duration: 0; crossFadeDuration: 1");
         this.objectSquid.setAttribute("animation-mixer", "clip: Waiting; loop: repeat; duration: 0; crossFadeDuration: 1");
       }
