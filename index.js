@@ -31,14 +31,14 @@ AFRAME.registerComponent('update-distance', {
     // Check the distance and update animations for objectROBOT and objectROBOT
     const lookAtMeAShley = (pos1, pos2, dist) => {
       if (pos1 <= 0){
-        this.objectSquid.setAttribute("animation", "property: rotation; to: 0 90 0; dur: 500; easing: linear");
-        this.objectRobot.setAttribute("animation", "property: rotation; to: 0 -90 0; dur: 500; easing: linear");
+        this.objectSquid.setAttribute("animation", "property: rotation; to: 0 90 0; dur: 300; easing: linear");
+        this.objectRobot.setAttribute("animation", "property: rotation; to: 0 -90 0; dur: 300; easing: linear");
         this.objectSquid.removeAttribute("look-at");
         this.objectRobot.removeAttribute("look-at");
       }
       else if (pos2 <=0 ) {
-        this.objectSquid.setAttribute("animation", "property: rotation; to: 0 -90 0; dur: 500; easing: linear");
-        this.objectRobot.setAttribute("animation", "property: rotation; to: 0 90 0; dur: 500; easing: linear");
+        this.objectSquid.setAttribute("animation", "property: rotation; to: 0 -90 0; dur: 300; easing: linear");
+        this.objectRobot.setAttribute("animation", "property: rotation; to: 0 90 0; dur: 300; easing: linear");
         this.objectSquid.removeAttribute("look-at");
         this.objectRobot.removeAttribute("look-at");
       }
@@ -89,7 +89,7 @@ AFRAME.registerComponent("marker-robot", {
       markerROBOTvisible = false;
       objectROBOT.setAttribute("look-at", "[camera]");
       objectSQUID.setAttribute("look-at", "[camera]");
-      objectSQUID.setAttribute("animation", "property: rotation; to: 0 0 0; dur: 500; easing: linear");
+      objectSQUID.setAttribute("animation", "property: rotation; to: 0 0 0; dur: 300; easing: linear");
     });
   }
 });
@@ -124,7 +124,7 @@ AFRAME.registerComponent("marker-squid", {
       markerSQUIDvisible = false;
       objectROBOT.setAttribute("look-at", "[camera]");
       objectSQUID.setAttribute("look-at", "[camera]");
-      objectROBOT.setAttribute("animation", "property: rotation; to: 0 0 0; dur: 500; easing: linear");
+      objectROBOT.setAttribute("animation", "property: rotation; to: 0 0 0; dur: 300; easing: linear");
     });
   }
 });
